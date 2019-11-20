@@ -18,7 +18,7 @@ public class Main {
     static final String youtubeKey = "AIzaSyAs8unCQNnDS3W-F6UQcXXQkhUXy26FAF0";
 
     public static void main(String[] args) throws LoginException, InterruptedException {
-        jda = new JDABuilder(AccountType.BOT).setToken("NjMyMzIzMjU1MjcyODY1ODAy.XaZ2tQ.c7gIMPA_v7p57sf4z-k3jt4xPYI").build();
+        jda = new JDABuilder(AccountType.BOT).setToken("TOKEN").build();
         jda.getPresence().setStatus(net.dv8tion.jda.api.OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.watching("mixer.com/naded_"));
 
