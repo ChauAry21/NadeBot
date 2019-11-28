@@ -1,0 +1,45 @@
+package nadebot.commands.music;
+
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import nadebot.hub.Constants;
+import nadebot.music.library.GuildMusicManager;
+import nadebot.music.library.MusicPlayer;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.concurrent.BlockingQueue;
+
+public class NowPlayingCommand extends ListenerAdapter {
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        String[] np = event.getMessage().getContentRaw().split("s\\+");
+
+
+        MusicPlayer playerManager = MusicPlayer.getInstance();
+        GuildMusicManager guildMusicManager = playerManager.getGuildMusicManager(event.getGuild());
+        AudioPlayer player = guildMusicManager.player;
+
+        if (np[0].equalsIgnoreCase(Constants.prefix + "np")) {
+            if (player.getPlayingTrack() == null) {
+                event.getChannel().sendMessage("Im not playing any songs lmao");
+
+                return;
+            }
+
+            AudioTrackInfo info = player.getPlayingTrack().getInfo();
+
+            EmbedBuilder npMessage = new EmbedBuilder();
+            npMessage.setColor(0xff3923);
+            npMessage.setTitle("Now Playing:");
+            npMessage.setDescription("**Currently Playing:** \n");
+            npMessage.appendDescription(String.format(
+                    "%s - %s \n",
+                    info.title,
+                    info.author
+            ));
+            event.getChannel().sendMessage(npMessage.build()).queue();
+        }
+    }
+}
